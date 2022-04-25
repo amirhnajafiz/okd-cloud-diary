@@ -43,3 +43,16 @@ Welcome to OpenShift! See 'oc help' to get started.
 Now you are connected to your cluster.
 
 ## Using helm
+After we connect to our cluster, we install our application using helm:
+```shell
+helm install RELEASE CHARTS_DIR
+```
+
+This should start your application on Kubernetes cluster.
+
+If you want to uninstall the application, use the following command:
+```shell
+helm uninstall RELEASE
+```
+
+## Errors
