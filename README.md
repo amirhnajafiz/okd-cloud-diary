@@ -56,3 +56,20 @@ helm uninstall RELEASE
 ```
 
 ## Errors
+### Role binding Error
+My first error in the cloud was Role binding error. This error comes from **service account**. A service account provides an identity for processes that run in a Pod.
+
+When I was deploying my project i got the following error:
+```shell
+Error: INSTALLATION FAILED: unable to build kubernetes objects from release manifest: [unable to recognize "": no matches for kind "Role" in 
+version "rbac.authorization.k8s.io/v1beta1", unable to recognize "": no matches for kind "RoleBinding" 
+in version "rbac.authorization.k8s.io/v1beta1"]
+```
+
+I manage to fix this by removing all of the code lines that were referred to **service account**.
+
+### Dependencies Error
+
+### Image Pull Error
+
+### Crash Loop
