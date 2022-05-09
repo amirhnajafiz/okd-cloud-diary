@@ -69,6 +69,35 @@ in version "rbac.authorization.k8s.io/v1beta1"]
 I manage to fix this by removing all of the code lines that were referred to **service account**.
 
 ### Dependencies Error
+For my project, I had two other dependencies, Jaeger and MQX. So when you want to add your dependencies to your project charts
+all you have to do is to find that dependencies charts and import them in **Chart.yaml** like this:
+```yaml
+# application dependencies
+dependencies:
+  - name: jaeger
+    version: 0.56.1
+    repository: https://jaegertracing.github.io/helm-charts
+```
+
+After that, you need to update your dependencies with the following command:
+```shell
+helm dep update
+```
+
+Now you have the **charts** directory with your dependencies charts. You will also have **Chart.lock** file.
+
+When you want to install your charts into the Kubernetes cluster, you may find some errors that are not in your charts.
+These errors usually get fixed by changing your dependencies versions.
+
+For changing your dependencies versions, change the version in **Chart.yaml** file and run the following command again:
+```shell
+helm dep update
+```
+
+If you already deployed your application, you need to run the following command too:
+```shell
+helm upgrade RELEASE
+```
 
 ### Image Pull Error
 
