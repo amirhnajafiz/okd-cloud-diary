@@ -111,3 +111,41 @@ my-pod-1    0/1      ImagePullBackOff    0           2m34s
 ```
 
 ### Crash Loop
+A CrashloopBackOff means that you have a pod starting, crashing, starting again, and then crashing again.
+
+A PodSpec has a restartPolicy field with possible values Always, OnFailure, and Never which applies to all containers in a pod. The default value is Always and the restartPolicy only refers to restarts of the containers by the kubelet on the same node (so the restart count will reset if the pod is rescheduled in a different node). Failed containers that are restarted by the kubelet are restarted with an exponential back-off delay (10s, 20s, 40s …) capped at five minutes, and is reset after ten minutes of successful execution. This is an example of a PodSpec with the restartPolicy field:
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dummy-pod
+spec:
+  containers:
+    - name: dummy-pod
+      image: ubuntu
+  restartPolicy: Always
+```
+
+A quick Google search will show us that crash loop events can happen for a number of different reasons (and they happen frequently). Here are some of the umbrella causes for why they occur:
+
+- The application inside the container keeps crashing. Here, we can highlight several common situations:
+    - Error in the application configuration. A wrong value or format can make the application exit just after start.
+    - Bugs or not caught exceptions.
+    - One of the downstream services on which the application relies can’t be reached or the connection fails (database, backend, etc.).
+- Errors in the manifest or pod configuration, such as:
+    - Trying to bind an already used port.
+    - Wrong command arguments for the container.
+    - Errors in liveness probes.
+    - Read-only filesystem.
+
+Run your standard kubectl get pods command and you’ll be able to see the status of any pod that is currently in CrashLoopBackOff:
+```shell
+kubectl get pods --namespace nginx-crashloop
+NAME                     READY     STATUS             RESTARTS   AGE
+flask-7996469c47-d7zl2   1/1       Running            1          77d
+flask-7996469c47-tdr2n   1/1       Running            0          77d
+nginx-5796d5bc7c-2jdr5   0/1       CrashLoopBackOff   2          1m
+nginx-5796d5bc7c-xsl6p   0/1       CrashLoopBackOff   2          1m
+```
+
+You can manually trigger a Sysdig capture at any point in time by selecting the host where you see the CrashLoopBackOff is occurring and starting the capture. You can take it manually with Sysdig open source if you have it installed on that host. But here will take advantage of the Sysdig Monitor capabilities that can automatically take this capture file as a response to an alert, in this case a CrashLoopBackOff alert.
