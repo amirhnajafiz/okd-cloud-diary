@@ -100,5 +100,14 @@ helm upgrade RELEASE
 ```
 
 ### Image Pull Error
+When a Kubernetes cluster creates a new deployment, or updates an existing deployment, it typically needs to pull an image. This is done by the kubelet process on each worker node. For the kubelet to successfully pull the images, they need to be accessible from all nodes in the cluster that match the scheduling request.
+
+The ImagePullBackOff error occurs when the image path is incorrect, the network fails, or the kubelet does not succeed in authenticating with the container registry. Kubernetes initially throws the ErrImagePull error, and then after retrying a few times, “pulls back” and schedules another download attempt. For each unsuccessful attempt, the delay increases exponentially, up to a maximum of 5 minutes.
+
+To identify the ImagePullBackOff error: run the kubectl get pods command. The pod status will show the error like so:
+```shell
+NAME        READY    STATUS              RESTARTS    AGE
+my-pod-1    0/1      ImagePullBackOff    0           2m34s
+```
 
 ### Crash Loop
