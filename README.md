@@ -149,3 +149,7 @@ nginx-5796d5bc7c-xsl6p   0/1       CrashLoopBackOff   2          1m
 ```
 
 You can manually trigger a Sysdig capture at any point in time by selecting the host where you see the CrashLoopBackOff is occurring and starting the capture. You can take it manually with Sysdig open source if you have it installed on that host. But here will take advantage of the Sysdig Monitor capabilities that can automatically take this capture file as a response to an alert, in this case a CrashLoopBackOff alert.
+
+## Resource Management
+
+## Different kind of deployments
