@@ -170,4 +170,8 @@ resources: {}
   #   memory: 128Mi
 ```
 
+## Tags
+I think one of the most important parts of deployment is tag. When you want to deploy your application
+always check the tag version of you docker-image, repository tag and the tag in Charts.yaml and values.yaml.
+
 ## Different kind of deployments
