@@ -151,5 +151,23 @@ nginx-5796d5bc7c-xsl6p   0/1       CrashLoopBackOff   2          1m
 You can manually trigger a Sysdig capture at any point in time by selecting the host where you see the CrashLoopBackOff is occurring and starting the capture. You can take it manually with Sysdig open source if you have it installed on that host. But here will take advantage of the Sysdig Monitor capabilities that can automatically take this capture file as a response to an alert, in this case a CrashLoopBackOff alert.
 
 ## Resource Management
+Based on what you want to deploy, you should always manage your resources. I once deployed a project without noticing 
+that I have few memory and cpu resource allocated for this application, and I go error, my app deployed but the pods 
+did not run.
+
+You can set your resources in your values.yaml file:
+```yaml
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+```
 
 ## Different kind of deployments
